@@ -1,0 +1,22 @@
+{
+  "name": "i18n-file-generator",
+  "version": "1.0.0",
+  "description": "File generator for i18n internalization",
+  "main": "scr/i18n.generator.js",
+  "scripts": {
+    "dev": "npm exec node src/i18n.generator.js",
+    "watch": "npm exec node src/i18n.watch.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RonaldTorrez/i18n-file-generator.git"
+  },
+  "keywords": [
+  ],
+  "author": "Ronald Torrez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RonaldTorrez/i18n-file-generator/issues"
+  },
+  "homepage": "https://github.com/RonaldTorrez/i18n-file-generator.git#readme"
+}
