@@ -1,24 +1,23 @@
 'use strict'
 
-const fs = require('fs').promises
+// const fs = require('fs').promises
+import { promises as fs } from 'fs'
+
 const {configDefaultGenerator} = require('./config/i18n.generator.config.default')
 const {loadFromRoot, loadFrom} = require('./utility/dir.util')
 const {getLanguages} = require('./utility/lang.util')
+const {jsonParse} = require('./utility/json.util')
 
 const IMPORT_FROM_FOLDER = configDefaultGenerator.importFromFolder
 const EXPORT_TO_FOLDER = configDefaultGenerator.exportToFolder
 const path = require('path')
 
 const dirname = (fielName) => path.join(__dirname, fielName)
-// Lee el archivo lang.json
+
+// TODO : Create function to read files bases to generate languages
+// Read files bases from generator.importFromFolder config
 const jsonFile = dirname('lang.json')
 
-// TODO : Generar archivos para JSON.util y luego crear funcion para cargar archivo json con validacion y otra funcion
-// para jsonParse ya sea del objeto pasado o desde un archivo
-async function jsonParse(file) {
-	const fileContent = await fs.readFile(file, 'utf8')
-	return JSON.parse(fileContent)
-}
 
 async function saveLanguageFile(language, obj) {
 	const langDataFiltered = await filterLanguage(obj, language)
