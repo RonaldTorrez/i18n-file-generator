@@ -3,4 +3,4 @@
 /.vscode
 
 /messages
-/i18n.generator.config.js
+/i18n.generator.config.mjs

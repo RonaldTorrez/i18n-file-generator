@@ -1,4 +1,4 @@
-async function getDeepObjectKey(obj) {
+export const getDeepObjectKey = async (obj) => {
 	const languages = []
 
 	for (const key in obj) {
@@ -13,5 +13,3 @@ async function getDeepObjectKey(obj) {
 
 	return languages
 }
-
-module.exports = {getLanguages: getDeepObjectKey}
