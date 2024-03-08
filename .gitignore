@@ -1,3 +1,6 @@
 /node_modules
 /.idea
 /.vscode
+
+/messages
+/i18n.generator.config.js
