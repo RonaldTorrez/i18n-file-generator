@@ -5,7 +5,7 @@ const CONFIG_CLI = await getConfigCli.then(config => config.default)
 const GENERATOR = 'generator' in CONFIG_CLI
 const PRINT_MESSAGES = 'printMessages' in CONFIG_CLI
 
-export const configDefaultGenerator = {
+export const configDefault = {
 	// GENERATOR CONFIG
 	importFromFolder: GENERATOR ? CONFIG_CLI.generator.importFromFolder ?? '/messages/i18n' : '/messages/i18n',
 	exportToFolder: GENERATOR ? CONFIG_CLI.generator.exportToFolder ?? '/messages' : '/messages',
