@@ -1,6 +1,6 @@
-import { getConfigCli } from './index.mjs'
+import { readConfigCli } from './index.mjs'
 
-const CONFIG_CLI = await getConfigCli.then(config => config.default)
+const CONFIG_CLI = await readConfigCli.then(config => config.default)
 
 const GENERATOR = 'generator' in CONFIG_CLI
 const PRINT_MESSAGES = 'printMessages' in CONFIG_CLI
@@ -8,6 +8,7 @@ const PRINT_MESSAGES = 'printMessages' in CONFIG_CLI
 export const configDefault = {
 	// GENERATOR CONFIG
 	importFromFolder: GENERATOR ? CONFIG_CLI.generator.importFromFolder ?? '/messages/i18n' : '/messages/i18n',
+	importFromSubFolder: GENERATOR ? CONFIG_CLI.generator.importFromSubFolder ?? false : false,
 	exportToFolder: GENERATOR ? CONFIG_CLI.generator.exportToFolder ?? '/messages' : '/messages',
 	useStrictLangAbbr: GENERATOR ? CONFIG_CLI.generator.useStrictLangAbbr ?? true : true,
 
