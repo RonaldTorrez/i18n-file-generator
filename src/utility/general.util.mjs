@@ -3,9 +3,7 @@ export const isText = (text) => {
 }
 
 export const isObj = (obj) => {
-	return typeof obj === 'object' &&
-	       !Array.isArray(obj) &&
-	       !isText(obj)
+	return typeof obj === 'object' && !Array.isArray(obj) && !isText(obj)
 }
 
 export const isArray = (arr) => {
@@ -13,6 +11,10 @@ export const isArray = (arr) => {
 }
 
 export const isNull = (value) => {
+	if (value === undefined || value === null) {
+		return true
+	}
+
 	if (isText(value) && value.trim() === '') {
 		return true
 	}
@@ -22,6 +24,14 @@ export const isNull = (value) => {
 	}
 
 	return !!(
-		isObj(value) && value !== null && Object.keys(value).length === 0
+		isObj(value) && true && Object.keys(value).length === 0
 	)
+}
+
+export const consoleError = (...error) => {
+	console.error('🚨 error:', error.join(' || '))
+}
+
+export const consoleSuccess = (...success) => {
+	console.log('✅ success:', success.join(' || '))
 }
