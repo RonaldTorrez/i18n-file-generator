@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs'
 import * as path from 'path'
 import { appConfig } from '../config/index.mjs'
+import { consoleError } from './general.util.mjs'
 
 export const pathFrom = (fromRoot = false, ...dir) => path.join(fromRoot ? process.cwd() : '', dir.join('/'))
 
@@ -12,9 +13,8 @@ export const readDir = async (path, returnFullPath = false) => {
 		return !returnFullPath ? files : files.map(file => pathFrom(false, path, file))
 	} catch (error) {
 		if (printMessagesForDev) {
-			console.error('🚨 error readDir()', path, error)
+			consoleError('readDir()', path, error)
 		}
-		return []
 	}
 }
 export const readFile = async (path) => await fs.readFile(path, 'utf8').then(data => data)
