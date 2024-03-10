@@ -1,5 +1,5 @@
-import { loadFromRoot } from '../utility/index.mjs'
+import { pathFrom } from '../utility/index.mjs'
 
 const configCliFileName = 'i18n.generator.config.mjs'
 
-export const readConfigCli = import(loadFromRoot(configCliFileName))
+export const readConfigCli = import(pathFrom(true, configCliFileName))

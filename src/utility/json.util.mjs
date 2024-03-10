@@ -1,6 +1,2 @@
-import { promises as fs } from 'fs'
-
-export const jsonFromFile = async (fileName) =>
-	await fs.readFile(fileName, 'utf8')
-
-export const jsonParse = (obj) => JSON.parse(obj)
+export const jsonParse = (data) => JSON.parse(data)
+export const jsonStringify = (data) => JSON.stringify(data, null, 2)
