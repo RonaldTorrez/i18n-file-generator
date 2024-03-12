@@ -1,21 +1,18 @@
 import { promises as fs } from 'fs'
-import { configDefaultGenerator } from './config/index.mjs'
-import { getLanguages, jsonParse } from './utility/index.mjs'
+import { configDefault } from './config/index.mjs'
+import { getDeepKeys, jsonStringify, mergeDataFromPath, mergeObjs, pathFrom } from './utility/index.mjs'
 
-const IMPORT_FROM_FOLDER = configDefaultGenerator.importFromFolder
-const EXPORT_TO_FOLDER = configDefaultGenerator.exportToFolder
-
-// const dirname = (fielName) => path.join(__dirname, fielName)
-
-// TODO : Create function to read files bases to generate languages
-// Read files bases from generator.importFromFolder config
-// const jsonFile = dirname('lang.json')
+const mergedData = await mergeDataFromPath(
+	pathFrom(true, configDefault.importFromFolder),
+	configDefault.importFromSubFolder
+)
+const data = mergeObjs(mergedData)
 
 async function saveLanguageFile(language, obj) {
 	const langDataFiltered = await filterLanguage(obj, language)
 	const fileName = `${language}.json`
-	const saveTo = `${__dirname}/../${fileName}`
-	await fs.writeFile(saveTo, JSON.stringify(langDataFiltered, null, 2))
+	const saveTo = pathFrom(true, configDefault.exportToFolder, fileName)
+	await fs.writeFile(saveTo, jsonStringify(langDataFiltered))
 	console.log('🚀 ~ Generated:', fileName)
 }
 
@@ -35,11 +32,10 @@ function filterLanguage(obj, language) {
 }
 
 async function generateFiles(obj) {
-	const languages = await getLanguages(obj)
+	const languages = getDeepKeys(obj)
 	for (const language of languages) {
 		await saveLanguageFile(language, obj)
 	}
 }
 
-generateFiles(jsonParse(jsonFile))
-	.then(r => console.log(r))
+generateFiles(data).then(r => console.log(r))
