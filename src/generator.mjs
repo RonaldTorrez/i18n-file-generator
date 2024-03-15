@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs'
-import { configDefault } from './config/index.mjs'
+import { appConfig, configDefault } from './config/index.mjs'
 import {
 	consoleError,
 	getDeepKeys,
@@ -19,41 +19,50 @@ const mergedData = await mergeDataFromPath(
 const data = mergeObjs(mergedData)
 
 async function saveLanguageFile(language, obj) {
-	const langDataFiltered = await filterLanguage(obj, language)
+	const langDataFiltered = filterByLang(obj, language)
 	const fileName = `${language}.json`
 	const saveTo = pathFrom(true, configDefault.exportToFolder, fileName)
 	await fs.writeFile(saveTo, jsonStringify(langDataFiltered))
 	console.log('🚀 ~ Generated:', fileName)
 }
 
-function filterLanguage(obj, language) {
+// TODO continue optimization of this function
+function filterByLang(data, lang) {
 	const result = {}
-	for (const key in obj) {
-		if (typeof obj[key] === 'object') {
-			const filtered = filterLanguage(obj[key], language)
-			if (Object.keys(filtered).length > 0) {
-				result[key] = filtered
+
+	const filterByLangRecursively = (data, lang) => {
+		for (const key in data) {
+			if (isObj(data[key])) {
+				const filtered = filterByLangRecursively(data[key], lang)
+				if (Object.keys(filtered).length > 0) {
+					result[key] = filtered
+				}
+			} else if (key === lang) {
+				return data[key]
 			}
-		} else if (key === language) {
-			return obj[key]
 		}
 	}
+
+	filterByLangRecursively(data, lang)
+
 	return result
 }
 
 async function generateFiles(data) {
-	if (isObj(data) || isArray(data)) {
-		configDefault.printMessagesError && consoleError('Data base is not an object', data)
+	if (!isObj(data) || isArray(data)) {
+		appConfig.printMessagesForDev && consoleError('Data base is not an object', 'generateFiles()', data)
+		consoleError('Data base is not an object', data)
 		return
 	}
-	if (isNull()) {
-		configDefault.printMessagesError && consoleError('Data base is empty', data)
+	if (isNull(data)) {
+		appConfig.printMessagesForDev && consoleError('Data base is empty', 'generateFiles()', data)
+		consoleError('Data base is empty', data)
 		return
 	}
 
 	const languages = getDeepKeys(data)
 	for (const language of languages) {
-		await saveLanguageFile(language, obj)
+		await saveLanguageFile(language, data)
 	}
 }
 
