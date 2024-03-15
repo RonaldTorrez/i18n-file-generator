@@ -1,6 +1,16 @@
 import { promises as fs } from 'fs'
 import { configDefault } from './config/index.mjs'
-import { getDeepKeys, jsonStringify, mergeDataFromPath, mergeObjs, pathFrom } from './utility/index.mjs'
+import {
+	consoleError,
+	getDeepKeys,
+	isArray,
+	isNull,
+	isObj,
+	jsonStringify,
+	mergeDataFromPath,
+	mergeObjs,
+	pathFrom
+} from './utility/index.mjs'
 
 const mergedData = await mergeDataFromPath(
 	pathFrom(true, configDefault.importFromFolder),
@@ -31,8 +41,17 @@ function filterLanguage(obj, language) {
 	return result
 }
 
-async function generateFiles(obj) {
-	const languages = getDeepKeys(obj)
+async function generateFiles(data) {
+	if (isObj(data) || isArray(data)) {
+		configDefault.printMessagesError && consoleError('Data base is not an object', data)
+		return
+	}
+	if (isNull()) {
+		configDefault.printMessagesError && consoleError('Data base is empty', data)
+		return
+	}
+
+	const languages = getDeepKeys(data)
 	for (const language of languages) {
 		await saveLanguageFile(language, obj)
 	}
